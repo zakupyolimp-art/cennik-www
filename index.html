@@ -26,7 +26,7 @@
   </div>
 
   <div class="flex">
-    <nav class="w-60 shrink-0 bg-white border-r border-slate-200 min-h-[calc(100vh-57px)] py-4">
+    <nav class="w-60 shrink-0 bg-white border-r border-slate-300 min-h-[calc(100vh-57px)] py-4">
       <button onclick="pokazZakladke('wyszukiwarka')" data-tab="wyszukiwarka" class="tab-btn w-full text-left px-5 py-2.5 text-sm font-medium flex items-center gap-2">🔍 Wyszukiwarka</button>
       <button onclick="pokazZakladke('zamowienia')" data-tab="zamowienia" class="tab-btn w-full text-left px-5 py-2.5 text-sm font-medium flex items-center gap-2">🛒 Zamówienia</button>
       <button onclick="pokazZakladke('porownanie')" data-tab="porownanie" class="tab-btn w-full text-left px-5 py-2.5 text-sm font-medium flex items-center gap-2">🖨️ Cenniki do druku</button>
@@ -37,7 +37,7 @@
 
       <!-- WYSZUKIWARKA -->
       <div id="view-wyszukiwarka" class="tab-view">
-        <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-4 mb-4 flex flex-wrap gap-3 items-end">
+        <div class="bg-white rounded-xl shadow-sm border border-slate-300 p-4 mb-4 flex flex-wrap gap-3 items-end">
           <div class="flex-1 min-w-[200px]">
             <label class="text-xs font-medium text-slate-500 block mb-1">Szukaj produktu</label>
             <input id="q2" type="text" placeholder="np. schab, pomidor..." class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500">
@@ -89,7 +89,7 @@
             <button onclick="drukujCennik()" class="flex items-center gap-1.5 bg-emerald-700 hover:bg-emerald-800 text-white text-sm font-semibold px-3 py-2 rounded-lg">🖨️ Drukuj</button>
           </div>
         </div>
-        <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+        <div class="bg-white rounded-xl shadow-sm border border-slate-300 overflow-hidden">
           <div class="overflow-x-auto">
             <table class="w-full text-sm">
               <thead class="bg-slate-100 text-slate-600 text-xs uppercase"><tr id="thead-por"></tr></thead>
@@ -103,7 +103,7 @@
       <div id="view-apka" class="tab-view hidden">
         <h2 class="text-xl font-bold mb-1">Apka "Wyszukiwarka Cen"</h2>
         <p class="text-sm text-slate-500 mb-4">Ten sam, stały link co zawsze — otwórz na telefonie, zaktualizuje się sam.</p>
-        <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-8 max-w-md">
+        <div class="bg-white rounded-xl shadow-sm border border-slate-300 p-8 max-w-md">
           <a href="https://zakupyolimp-art.github.io/gastromall-cenniki-app/" target="_blank" class="block text-center bg-emerald-700 hover:bg-emerald-800 text-white font-semibold px-6 py-3 rounded-lg mb-3">🔗 Otwórz Wyszukiwarkę Cen</a>
           <p class="text-xs text-slate-400 text-center break-all">https://zakupyolimp-art.github.io/gastromall-cenniki-app/</p>
         </div>
@@ -111,7 +111,7 @@
 
     </div>
 
-    <nav class="w-52 shrink-0 bg-white border-l border-slate-200 min-h-[calc(100vh-57px)] py-4">
+    <nav class="w-52 shrink-0 bg-white border-l border-slate-300 min-h-[calc(100vh-57px)] py-4">
       <a href="mailto:PODAJ_ADRES_ADMINA@example.com?subject=PROBLEM%20—%20zgłoszenie%20z%20Cennik%C3%B3w"
          class="tab-btn w-full text-left px-5 py-2.5 text-sm font-medium flex items-center gap-2">🚩 Zgłoś problem</a>
     </nav>
@@ -270,8 +270,8 @@ function wczytajWyszukiwarke() {
 
   if (trybDostawcy) {
     document.getElementById('karty-wysz').innerHTML = `
-    <div class="bg-white rounded-xl shadow-md border border-slate-200 overflow-hidden">
-      <div class="px-4 py-2.5 bg-slate-100 border-b border-slate-200"><h3 class="text-lg font-bold text-slate-800">${esc([...dostawcyWWynikach][0])} — ${kolejnosc.length} pozycji</h3></div>
+    <div class="bg-white rounded-xl shadow-md border border-slate-300 overflow-hidden">
+      <div class="px-4 py-2.5 bg-slate-100 border-b border-slate-300"><h3 class="text-lg font-bold text-slate-800">${esc([...dostawcyWWynikach][0])} — ${kolejnosc.length} pozycji</h3></div>
       <div class="divide-y divide-slate-100">
         ${kolejnosc.map(k => {
           const p = grupy[k].oferty[0];
@@ -292,10 +292,10 @@ function wczytajWyszukiwarke() {
     const g = grupy[k];
     const minCena = g.oferty[0].cena_jedn_bazowa;
     return `
-    <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+    <div class="bg-white rounded-xl shadow-sm border border-slate-300 overflow-hidden">
       <div class="px-4 py-2.5 bg-slate-200 border-b-2 border-emerald-300 flex items-center justify-between gap-3">
         <h3 class="text-lg font-bold text-slate-800 tracking-wide truncate">${esc(g.nazwa)}</h3>
-        <span class="text-xs text-slate-500 bg-white px-2 py-0.5 rounded-full shrink-0 border border-slate-200">${g.oferty.length} ${g.oferty.length === 1 ? 'oferta' : 'oferty'}</span>
+        <span class="text-xs text-slate-500 bg-white px-2 py-0.5 rounded-full shrink-0 border border-slate-300">${g.oferty.length} ${g.oferty.length === 1 ? 'oferta' : 'oferty'}</span>
       </div>
       <div class="divide-y divide-slate-100">
         ${g.oferty.map(p => {
@@ -333,7 +333,7 @@ function wczytajZamowienia() {
     const suma = pozycje.reduce((s, p) => s + (p.cena_jedn_bazowa || 0) * (p.ilosc_zamowienia || 0), 0);
     const kolor = kolory[i++ % kolory.length];
     return `<div class="bg-white rounded-xl shadow-sm border-2 ${kolor} overflow-hidden flex flex-col">
-      <div class="px-4 py-3 bg-slate-50 border-b border-slate-200 flex items-center justify-between">
+      <div class="px-4 py-3 bg-slate-50 border-b border-slate-300 flex items-center justify-between">
         <h3 class="font-bold text-slate-700">🛒 ${esc(dostawca)}</h3>
         <span class="text-xs text-slate-400">${pozycje.length} poz.</span>
       </div>
@@ -347,7 +347,7 @@ function wczytajZamowienia() {
           </tr>`;
         }).join('')}
       </tbody></table>
-      <div class="px-4 py-3 border-t border-slate-200 flex items-center justify-between">
+      <div class="px-4 py-3 border-t border-slate-300 flex items-center justify-between">
         <span class="font-bold">Razem: ${suma.toFixed(2)} zł</span>
       </div>
     </div>`;
