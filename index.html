@@ -374,6 +374,16 @@ function wczytajWyszukiwarke() {
 }
 
 // --- Zamówienia ---
+function kopiujWidoczne(idTbody, etykieta) {
+  const wiersze = document.querySelectorAll('#' + idTbody + ' tr');
+  const linie = Array.from(wiersze).map(tr =>
+    Array.from(tr.querySelectorAll('td')).map(td => td.textContent.trim()).join(' | ')
+  );
+  navigator.clipboard.writeText(linie.join('\n')).then(() => {
+    alert('Skopiowano ' + linie.length + ' wierszy (' + etykieta + ') do schowka.');
+  });
+}
+
 function wczytajZamowienia() {
   const ilosci = wczytajIlosci();
   const rows = PRODUKTY.filter(p => ilosci[p.id]).map(p => ({...p, ilosc_zamowienia: ilosci[p.id]}));
@@ -384,13 +394,14 @@ function wczytajZamowienia() {
   let i = 0;
   document.getElementById('koszyki-zam').innerHTML = Object.entries(wgDostawcy).map(([dostawca, pozycje]) => {
     const suma = pozycje.reduce((s, p) => s + (p.cena_jedn_bazowa || 0) * (p.ilosc_zamowienia || 0), 0);
+    const idTbody = 'kosz_' + dostawca.replace(/[^a-zA-Z0-9]/g, '_');
     const kolor = kolory[i++ % kolory.length];
     return `<div class="bg-white rounded-xl shadow-sm border-2 ${kolor} overflow-hidden flex flex-col">
       <div class="px-4 py-3 bg-slate-50 border-b border-slate-300 flex items-center justify-between">
         <h3 class="font-bold text-slate-700">🛒 ${esc(dostawca)}</h3>
         <span class="text-xs text-slate-400">${pozycje.length} poz.</span>
       </div>
-      <table class="w-full text-sm flex-1"><tbody>
+      <table class="w-full text-sm flex-1"><tbody id="${idTbody}">
         ${pozycje.map(p => {
           const wartosc = (p.cena_jedn_bazowa || 0) * (p.ilosc_zamowienia || 0);
           return `<tr class="border-b border-slate-100">
@@ -402,6 +413,10 @@ function wczytajZamowienia() {
       </tbody></table>
       <div class="px-4 py-3 border-t border-slate-300 flex items-center justify-between">
         <span class="font-bold">Razem: ${suma.toFixed(2)} zł</span>
+        <button onclick="kopiujWidoczne('${idTbody}', 'koszyk ${esc(dostawca)}')"
+                class="bg-slate-700 hover:bg-slate-800 text-white text-xs font-medium px-3 py-1.5 rounded-lg">
+          📋 Kopiuj
+        </button>
       </div>
     </div>`;
   }).join('');
