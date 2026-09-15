@@ -282,7 +282,12 @@ function opisOpakowania(p) {
   }
   // np. "KARTON 24SZT." -> ile sztuk w opakowaniu
   const mSzt = oryg.match(/(\d+)\s*SZT/i);
-  return mSzt ? ` <span class="text-slate-400">(${mSzt[1]} szt./${esc(p.jednostka_bazowa)})</span>` : '';
+  if (mSzt) return ` <span class="text-slate-400">(${mSzt[1]} szt./${esc(p.jednostka_bazowa)})</span>`;
+  // reszta jednostek bez wzorca SZT (butelka/baniak w litrach, zgrzewka, słoik...) - user
+  // 2026-09-15: "CLINEX baniak i nie wiadomo ile litrów" - pokaż resztę opisu z arkusza po
+  // nazwie jednostki (np. "BANIAK 5L" -> "5L/baniak"), zamiast nic nie pokazywać.
+  const reszta = oryg.replace(/^[A-ZĄĆĘŁŃÓŚŹŻ]+\.?\s*/i, '').trim();
+  return reszta ? ` <span class="text-slate-400">(${esc(reszta)}/${esc(p.jednostka_bazowa)})</span>` : '';
 }
 
 function wczytajWyszukiwarke() {
