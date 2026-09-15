@@ -271,7 +271,7 @@ function wczytajWyszukiwarke() {
   if (trybDostawcy) {
     document.getElementById('karty-wysz').innerHTML = `
     <div class="bg-white rounded-xl shadow-md border border-slate-200 overflow-hidden">
-      <div class="px-4 py-2.5 bg-slate-100 border-b border-slate-200"><h3 class="text-sm font-bold text-slate-700">${esc([...dostawcyWWynikach][0])} — ${kolejnosc.length} pozycji</h3></div>
+      <div class="px-4 py-2.5 bg-slate-100 border-b border-slate-200"><h3 class="text-lg font-bold text-slate-800">${esc([...dostawcyWWynikach][0])} — ${kolejnosc.length} pozycji</h3></div>
       <div class="divide-y divide-slate-100">
         ${kolejnosc.map(k => {
           const p = grupy[k].oferty[0];
@@ -294,7 +294,7 @@ function wczytajWyszukiwarke() {
     return `
     <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
       <div class="px-4 py-2.5 bg-slate-200 border-b-2 border-emerald-300 flex items-center justify-between gap-3">
-        <h3 class="text-sm font-bold text-slate-700 tracking-wide truncate">${esc(g.nazwa)}</h3>
+        <h3 class="text-lg font-bold text-slate-800 tracking-wide truncate">${esc(g.nazwa)}</h3>
         <span class="text-xs text-slate-500 bg-white px-2 py-0.5 rounded-full shrink-0 border border-slate-200">${g.oferty.length} ${g.oferty.length === 1 ? 'oferta' : 'oferty'}</span>
       </div>
       <div class="divide-y divide-slate-100">
@@ -307,7 +307,7 @@ function wczytajWyszukiwarke() {
                 ${best ? '<span class="text-[10px] font-bold bg-emerald-600 text-white px-1.5 py-0.5 rounded-full">NAJNIŻSZA</span>' : ''}
                 <span class="text-xs text-slate-400">${esc(p.region || '')}</span>
               </div>
-              <div class="text-xs text-slate-400 italic">${esc(p.produkt)}</div>
+              <div class="text-sm text-slate-500 italic">${esc(p.produkt)}</div>
             </div>
             <div class="flex items-center gap-2 shrink-0">
               <span class="font-semibold ${best ? 'text-emerald-700' : 'text-slate-600'}">${p.cena_jedn_bazowa != null ? p.cena_jedn_bazowa.toFixed(2) + ' zł' : '—'} <span class="text-xs text-slate-400 font-normal">/ ${esc(p.jednostka_bazowa || '')}</span>${opisOpakowania(p)}</span>
@@ -419,7 +419,7 @@ function wczytajPorownanie() {
   document.getElementById('thead-por').innerHTML =
     '<th class="text-left px-4 py-3 sticky left-0 bg-slate-100">Artykuł</th><th class="text-left px-4 py-3">J.m.</th>' +
     dane.dostawcy.map(d => `<th class="text-right px-4 py-3">${esc(d)}</th>`).join('');
-  const naglowekSekcji = (t) => `<tr><td colspan="${2 + dane.dostawcy.length}" class="px-4 py-2 bg-slate-50 font-bold text-slate-600 text-xs uppercase tracking-wide">${esc(t)}</td></tr>`;
+  const naglowekSekcji = (t) => `<tr><td colspan="${2 + dane.dostawcy.length}" class="px-4 py-2.5 bg-emerald-100 text-emerald-900 font-bold text-xs uppercase tracking-wider border-t-4 border-emerald-400">${esc(t)}</td></tr>`;
   let html = '';
   if (dane.top.length) { html += naglowekSekcji('Produkty TOP / Best Price') + dane.top.map(w => _wierszCennika(w, dane.dostawcy)).join(''); }
   if (dane.standard.length) { html += naglowekSekcji(dane.top.length ? 'Ceny standard' : 'Artykuły') + dane.standard.map(w => _wierszCennika(w, dane.dostawcy)).join(''); }
