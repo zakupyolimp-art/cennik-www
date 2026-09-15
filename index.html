@@ -461,10 +461,13 @@ function wybierzGrupePorownania(g) {
 function pobierzCennikDruku(grupa, region) {
   const rows = PRODUKTY.filter(p => p.grupa_towarowa === grupa);
   const dostawcyWidoczni = [...new Set(rows.filter(r => pasujeRegion(r.region, region)).map(r => r.dostawca))].sort();
+  // Po DOKŁADNEJ nazwie produktu (nie po kanonie) - patrz komentarz w app.py, ten sam powód:
+  // prawdziwy arkusz "do druku" wyszukuje po literalnej nazwie per dostawca, nie po scalonym
+  // kanonie - naprawa 2026-09-15 ("u większości brakuje cen standard").
   const wgNazwy = {};
   rows.forEach(r => {
     if (!pasujeRegion(r.region, region)) return;
-    const klucz = (r.kanon || r.produkt).trim().toUpperCase();
+    const klucz = r.produkt.trim().toUpperCase();
     (wgNazwy[klucz] = wgNazwy[klucz] || []).push(r);
   });
   function zbudujWiersze(nazwy) {
