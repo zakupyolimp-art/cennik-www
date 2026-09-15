@@ -269,10 +269,20 @@ function pobierzProdukty({q, dostawca, region}) {
   return rows;
 }
 
+// Pokazuje ile faktycznie jest "w środku" jednej zamawianej jednostki (ile sztuk w kartonie,
+// albo ile gramów/kg waży jedna sztuka np. przyprawy) - user 2026-09-15: "skąd wiadomo ile to
+// gramów, jak ktoś zamawia sztukę bazylii" - bez tego "6,23 zł/szt" nic nie mówi o wielkości.
 function opisOpakowania(p) {
-  if (!p.jednostka_bazowa || ['kg', 'szt'].includes(p.jednostka_bazowa)) return '';
-  const m = (p.jednostka_oryginalna || '').match(/(\d+)\s*SZT/i);
-  return m ? ` <span class="text-slate-400">(${m[1]} szt./${esc(p.jednostka_bazowa)})</span>` : '';
+  const oryg = p.jednostka_oryginalna || '';
+  if (p.jednostka_bazowa === 'kg') return '';
+  if (p.jednostka_bazowa === 'szt') {
+    // np. "SZT. 0,18KG" -> waga jednej sztuki
+    const mWaga = oryg.match(/SZT\.?\s*([\d,]+)\s*KG/i);
+    return mWaga ? ` <span class="text-slate-400">(${mWaga[1]} kg/szt.)</span>` : '';
+  }
+  // np. "KARTON 24SZT." -> ile sztuk w opakowaniu
+  const mSzt = oryg.match(/(\d+)\s*SZT/i);
+  return mSzt ? ` <span class="text-slate-400">(${mSzt[1]} szt./${esc(p.jednostka_bazowa)})</span>` : '';
 }
 
 function wczytajWyszukiwarke() {
