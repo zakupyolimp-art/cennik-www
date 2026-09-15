@@ -317,17 +317,28 @@ function wczytajWyszukiwarke() {
   document.getElementById('licznik-wysz').textContent = kolejnosc.length;
   document.getElementById('pusto-wysz').classList.toggle('hidden', kolejnosc.length > 0);
 
-  const dostawcyWWynikach = new Set(rows.map(p => p.dostawca));
-  const trybDostawcy = dostawcyWWynikach.size === 1 && kolejnosc.length > 3 &&
-    (() => { const d = [...dostawcyWWynikach][0].toLowerCase(); return d.includes(qNorm) || qNorm.includes(d); })();
+  // Tryb "wyszukiwanie po nazwie dostawcy" (np. "kuchnia centralna") - wykrywany PO
+  // NAZWIE DOSTAWCY dopasowanej do frazy, NIE po tym że wszystkie wyniki mają jednego
+  // dostawcę - scalenia indeksów (ten sam kanon u kilku dostawców, np. "Kasza gryczana
+  // prażona" u Kuchnia Centralna I CHEFS) potrafią wciągnąć do wyników pojedyncze wiersze
+  // innych dostawców przez wspólny kanon, co wcześniej fałszywie wyłączało ten tryb
+  // (naprawione 2026-09-15). Lista pozycji w tym trybie i tak pokazuje TYLKO oferty
+  // dopasowanego dostawcy, nie te przypadkowo dociągnięte.
+  const wszyscyDostawcy = [...new Set(PRODUKTY.map(p => p.dostawca))];
+  const dostawcaDopasowany = wszyscyDostawcy.find(d => produktPasujeDoFrazy(d, q));
+  const oferty2 = dostawcaDopasowany ? rows.filter(p => p.dostawca === dostawcaDopasowany) : [];
+  const trybDostawcy = dostawcaDopasowany && oferty2.length > 3;
 
   if (trybDostawcy) {
+    const kanonyDostawcy = new Set(oferty2.map(p => (p.kanon || p.produkt.trim()).toUpperCase()));
+    const kolejnoscDostawcy = kolejnosc.filter(k => kanonyDostawcy.has(k));
+    document.getElementById('licznik-wysz').textContent = kolejnoscDostawcy.length;
     document.getElementById('karty-wysz').innerHTML = `
     <div class="bg-white rounded-xl shadow-md border border-slate-300 overflow-hidden">
-      <div class="px-4 py-2.5 bg-slate-100 border-b border-slate-300"><h3 class="text-lg font-bold text-slate-800">${esc([...dostawcyWWynikach][0])} — ${kolejnosc.length} pozycji</h3></div>
+      <div class="px-4 py-2.5 bg-slate-100 border-b border-slate-300"><h3 class="text-lg font-bold text-slate-800">${esc(dostawcaDopasowany)} — ${kolejnoscDostawcy.length} pozycji</h3></div>
       <div class="divide-y divide-slate-100">
-        ${kolejnosc.map(k => {
-          const p = grupy[k].oferty[0];
+        ${kolejnoscDostawcy.map(k => {
+          const p = grupy[k].oferty.find(o => o.dostawca === dostawcaDopasowany);
           return `<div class="px-4 py-2 flex items-center justify-between gap-3">
             <span class="text-sm text-slate-700 truncate">${esc(grupy[k].nazwa)}</span>
             <div class="flex items-center gap-2 shrink-0">
